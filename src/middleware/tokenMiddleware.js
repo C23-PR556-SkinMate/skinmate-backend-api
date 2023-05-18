@@ -7,14 +7,11 @@ const verifyToken = (req, res, next) => {
 
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, uid) => {
         if (err) return res.sendStatus(401);
-        req.uid = uid;
+        req.uid = uid.split['-'][0];
         next();
     });
 };
 
-const refreshToken = () => {};
-
 module.exports = {
     verifyToken,
-    refreshToken,
 };
