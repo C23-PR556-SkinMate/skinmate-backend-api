@@ -16,6 +16,13 @@ server.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'docs', 'index.html'));
 });
 
+server.get('/api', (req, res) => {
+    res.status(200).json({
+        message: 'Response successful',
+        success: true,
+    });
+});
+
 server.listen(PORT, () => {
     console.log(`Listening on PORT ${PORT}`);
 });
