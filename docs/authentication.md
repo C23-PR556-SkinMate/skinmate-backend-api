@@ -14,13 +14,17 @@
 ```json
 {
     "email": "someuser@example.com",
-    "password": "somesecretpassword"
+    "password": "somesecretpassword",
+    "displayName": "User",
+    "description": "Hello world! I'm a random user"
 }
 ```
 
 * Field Definitions:
     * `email` (string, REQUIRED): The user's email address.
     * `password` (string, REQUIRED): The user's password.
+    * `displayName` (string, OPTIONAL): The user's display name, default value is taken from email name.
+    * `description` (string, OPTIONAL): The user's description, default value is empty string.
 
 * Response:
 ```json
