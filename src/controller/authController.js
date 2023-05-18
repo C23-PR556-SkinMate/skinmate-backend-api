@@ -37,7 +37,11 @@ const signIn = async (req, res) => {
         if (await comparePassword(password, hashedPassword)) {
             const token = jwt.sign(uid, process.env.ACCESS_TOKEN_SECRET);
             res.status(200).json({
-                token,
+                data : {
+                    uid,
+                    token,
+                },
+                message: 'Signed in successfully',
                 success: true,
             });
         } else {
@@ -62,11 +66,22 @@ const signUp = async (req, res) => {
 
     try {
         const userRef = db.collection('users');
+        const checkEmails = await userRef.where('email', '==', email).get();
+
+        if (!checkEmails.empty) {
+            return res.status(409).json({
+                message: 'Email already exists',
+            });
+        }
+
         const hashedPassword = await encryptPassword(password);
-        
+        const createdAt = Date.now();
+
         await userRef.add({
             email,
             password: hashedPassword,
+            verified: false,
+            createdAt,
         });
         
         res.status(200).json({
