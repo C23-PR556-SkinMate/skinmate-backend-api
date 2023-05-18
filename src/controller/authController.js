@@ -12,7 +12,7 @@ const encryptPassword = async (password) => {
     return bcrypt.hash(password, 10);
 };
 
-const signIn = async (req, res) => {
+const login = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -41,7 +41,7 @@ const signIn = async (req, res) => {
                     uid,
                     token,
                 },
-                message: 'Signed in successfully',
+                message: 'Logged in successfully',
                 success: true,
             });
         } else {
@@ -55,7 +55,7 @@ const signIn = async (req, res) => {
     }
 };
 
-const signUp = async (req, res) => {
+const register = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -85,7 +85,7 @@ const signUp = async (req, res) => {
         });
         
         res.status(200).json({
-            message: 'Signed up successfully',
+            message: 'Registered successfully',
             success: true,
         });
 
@@ -96,6 +96,6 @@ const signUp = async (req, res) => {
 };
 
 module.exports = {
-    signIn,
-    signUp,
+    login,
+    register,
 };
