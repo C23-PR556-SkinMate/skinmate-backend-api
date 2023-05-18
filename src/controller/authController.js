@@ -12,6 +12,11 @@ const encryptPassword = async (password) => {
     return bcrypt.hash(password, 10);
 };
 
+const validateEmail = (email) => {
+    const regex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+    return email.match(regex);
+};
+
 const login = async (req, res) => {
     const { email, password } = req.body;
 
@@ -21,13 +26,19 @@ const login = async (req, res) => {
         });
     }
 
+    if (!validateEmail(email)) {
+        return res.status(409).json({
+            message: 'Invalid email format',
+        });
+    }
+
     try {
         const userRef = db.collection('users');
         const userSnapshot = await userRef.where('email', '==', email).limit(1).get();
         
         if (userSnapshot.empty) {
             return res.status(404).json({
-                message: 'Invalid email',
+                message: 'Email does not exists',
             });
         }
         
@@ -35,7 +46,7 @@ const login = async (req, res) => {
         const hashedPassword = userSnapshot.docs[0].data().password;
 
         if (await comparePassword(password, hashedPassword)) {
-            const token = jwt.sign(uid, process.env.ACCESS_TOKEN_SECRET);
+            const token = jwt.sign(`${uid}-${email}`, process.env.ACCESS_TOKEN_SECRET);
             res.status(200).json({
                 data : {
                     uid,
@@ -46,21 +57,26 @@ const login = async (req, res) => {
             });
         } else {
             res.status(404).json({
-                message: 'Invalid password',
+                message: 'Wrong password',
             });
         }
     } catch (error) {
-        console.log(error);
         res.status(500);
     }
 };
 
 const register = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, displayName, description } = req.body;
 
     if (!email || !password) {
         return res.status(404).json({
             message: 'Missing email or password',
+        });
+    }
+
+    if (!validateEmail(email)) {
+        return res.status(409).json({
+            message: 'Invalid email format',
         });
     }
 
@@ -76,12 +92,24 @@ const register = async (req, res) => {
 
         const hashedPassword = await encryptPassword(password);
         const createdAt = Date.now();
-
-        await userRef.add({
+        const newUserRef = userRef.doc();
+        
+        await newUserRef.set({
             email,
             password: hashedPassword,
             verified: false,
             createdAt,
+            updatedAt : createdAt,
+        });
+        
+        const profileRef = db.collection('profiles');
+        const uid = newUserRef.id;
+
+        await profileRef.doc(uid).set({
+            displayName: displayName || email.split('@')[0],
+            description: description || '',
+            createdAt,
+            updatedAt : createdAt,
         });
         
         res.status(200).json({
@@ -90,7 +118,6 @@ const register = async (req, res) => {
         });
 
     } catch (error) {
-        console.log(error);
         res.status(500);
     }
 };
