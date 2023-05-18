@@ -2,9 +2,9 @@
 
 > Documentation for SkinMate RESTful API made with NodeJS and Express.
 
-## Endpoint
+## API URL
 
-> <https://skinmate-app.com/api/>
+> TBD
 
 ## List of Endpoint
 
@@ -13,3 +13,4 @@
 3. [Result]()
 4. [Predict]()
 5. [Improvement]()
+6. [Recommendation]()
