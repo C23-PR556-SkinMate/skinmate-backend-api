@@ -5,7 +5,7 @@
 - Endpoint
 
   - [Authentication](authentication.md)
-  - [Profile]()
+  - [Profile](profile.md)
   - [Result]()
   - [Predict]()
   - [Improvement]()
