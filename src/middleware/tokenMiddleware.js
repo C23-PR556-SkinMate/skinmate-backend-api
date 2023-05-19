@@ -2,12 +2,13 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const verifyToken = (req, res, next) => {
-    const token = req.headers.authorization.split(' ')[1];
-    if (!token) res.sendStatus(401);
+    const authHeader = req.headers.authorization;
+    if (!authHeader) return res.sendStatus(401);
 
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, uid) => {
+    const token = authHeader.split(' ')[1];
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, result) => {
         if (err) return res.sendStatus(401);
-        req.uid = uid.split['-'][0];
+        req.uid = result.uid;
         next();
     });
 };

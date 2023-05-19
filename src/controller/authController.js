@@ -46,7 +46,7 @@ const login = async (req, res) => {
         const hashedPassword = userSnapshot.docs[0].data().password;
 
         if (await comparePassword(password, hashedPassword)) {
-            const token = jwt.sign(`${uid}-${email}`, process.env.ACCESS_TOKEN_SECRET);
+            const token = jwt.sign({uid, email}, process.env.ACCESS_TOKEN_SECRET);
             res.status(200).json({
                 data : {
                     uid,
