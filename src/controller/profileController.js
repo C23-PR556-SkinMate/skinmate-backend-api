@@ -128,7 +128,7 @@ const setProfilePicture = async (req, res) => {
     }
 
     try {    
-        const url = await uploadImage(file);
+        const url = await uploadImage(file, uid, 'profile-picture');
         
         const profileRef = db.collection('profiles');
         const updatedAt = Date.now();
