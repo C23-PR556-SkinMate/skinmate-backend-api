@@ -8,7 +8,7 @@ const verifyToken = (req, res, next) => {
     const token = authHeader.split(' ')[1];
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, result) => {
         if (err) return res.sendStatus(401);
-        req.uid = result.uid;
+        req.result = result;
         next();
     });
 };
