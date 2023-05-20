@@ -1,17 +1,17 @@
 # Profile
 
-> This API provides endpoints for getting and setting user profile.
+> This API provides endpoints for getting and updating the user profile.
 
 ## Get Profile
 
 * Endpoint:
     * `GET /api/profile/{uid}`
 
-* Query:
+* Parameter:
     * `uid` (string, REQUIRED): The user's id.
 
-* Request Headers:
-    * `Authorization`: `Bearer {token}`
+* Authorization Header:
+    * `Bearer {token}`
 
 * Response:
 ```json
@@ -40,6 +40,7 @@
 * Request Body: 
 ```json
 {
+    "uid": "k1LZ8t8YwEdpdnjd4FAr",
     "displayName": "User",
     "description": "Hello world! I'm a random user"
 }
@@ -59,3 +60,34 @@
 
 * Notes:
     * The response is a JSON object with a `success` field indicating the success or failure of the request.
+
+## Set Profile Picture
+
+* Endpoint:
+    * `POST /api/profile/upload`
+
+* Content-Type:
+    * `multipart/form-data`
+
+* Authorization Header:
+    * `Bearer {token}`
+
+* Request Body:
+    * Make sure that you're using `multipart/form-data` content type!
+
+    | **Field** | **Value** | **Description** |
+    |:---:|:---:|:---|
+    | uid | String | The user's id |
+    | file | File | Image file type either .jpg or .png |
+
+* Response:
+```json
+{
+    "data": {
+        "uid": "k1LZ8t8YwEdpdnjd4FAr",
+        "profileImg": "https://storage.googleapis.com/skinmate-bucket/profile-picture/default-profile-pic.jpg"
+    },
+    "message": "Profile image has been successfully uploaded",
+    "success": true
+}
+```
