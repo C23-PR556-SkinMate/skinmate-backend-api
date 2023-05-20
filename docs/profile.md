@@ -17,8 +17,14 @@
 ```json
 {
     "data": {
+        "profileImg": "https://storage.googleapis.com/skinmate-bucket/profile-picture/k1LZ8t8YwEdpdnjd4FAr-profile-picture.jpg",
         "displayName": "User",
-        "description": "Hello world! I'm a random user"
+        "description": "Hello world! I'm a random user",
+        "dateOfBirth": "",
+        "skinType": "dry",
+        "gender": "female",
+        "reminderDay": "",
+        "reminderNight": "",
     },
     "message": "Successfully found the user profile",
     "success": true
@@ -27,7 +33,7 @@
 
 * Notes:
     * The response is a JSON object with a `success` field indicating the success or failure of the request.
-    * The data field contains the requested user profile with it's `displayName` and `description`
+    * The data field contains the requested user profile with it's `displayName`, `description`, and other data.
 
 ## Set Profile
 
@@ -85,7 +91,7 @@
 {
     "data": {
         "uid": "k1LZ8t8YwEdpdnjd4FAr",
-        "profileImg": "https://storage.googleapis.com/skinmate-bucket/profile-picture/default-profile-pic.jpg"
+        "profileImg": "https://storage.googleapis.com/skinmate-bucket/profile-picture/k1LZ8t8YwEdpdnjd4FAr-profile-picture.jpg"
     },
     "message": "Profile image has been successfully uploaded",
     "success": true
