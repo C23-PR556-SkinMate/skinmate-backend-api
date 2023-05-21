@@ -23,8 +23,11 @@
 * Field Definitions:
     * `email` (string, REQUIRED): The user's email address.
     * `password` (string, REQUIRED): The user's password.
-    * `displayName` (string, OPTIONAL): The user's display name, default value is taken from email name.
-    * `description` (string, OPTIONAL): The user's description, default value is empty string.
+    * `displayName` (string, OPTIONAL): The user's display name.
+    * `description` (string, OPTIONAL): The user's description.
+    * `dateOfBirth` (string, OPTIONAL): The user's date of birth with valid `DD/MM/YYYY` format.
+    * `skinType` (string, OPTIONAL): The user's skin type, the valid skin type are `oily`, `dry`, and `oily-dry`.
+    * `gender` (string, OPTIONAL): The user's gender, the valid gender are `male` and `female`.
 
 * Response:
 ```json

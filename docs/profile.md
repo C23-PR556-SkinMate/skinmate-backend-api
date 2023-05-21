@@ -35,37 +35,53 @@
     * The response is a JSON object with a `success` field indicating the success or failure of the request.
     * The data field contains the requested user profile with it's `displayName`, `description`, and other data.
 
-## Set Profile
+## Update Profile
 
 * Endpoint:
-    * `POST /api/profile`
+    * `PUT /api/profile/{uid}`
+
+* Parameter:
+    * `uid` (string, REQUIRED): The user's id.
 
 * Content-Type:
     * `application/json`
 
+* Authorization Header:
+    * `Bearer {token}`
+
 * Request Body: 
 ```json
 {
-    "uid": "k1LZ8t8YwEdpdnjd4FAr",
     "displayName": "User",
-    "description": "Hello world! I'm a random user"
+    "description": "Hello world! I'm a random user",
+    "dateOfBirth": "",
+    "skinType": "dry",
+    "gender": "female",
+    "reminderDay": "",
+    "reminderNight": "",
 }
 ```
 
 * Field Definitions:
-    * `displayName` (string, OPTIONAL): The user's display name, default value is taken from email name.
-    * `description` (string, OPTIONAL): The user's description, default value is empty string.
+    * `displayName` (string, OPTIONAL): The user's display name.
+    * `description` (string, OPTIONAL): The user's description.
+    * `dateOfBirth` (string, OPTIONAL): The user's date of birth with valid `DD/MM/YYYY` format.
+    * `skinType` (string, OPTIONAL): The user's skin type, the valid skin type are `oily`, `dry`, and `oily-dry`.
+    * `gender` (string, OPTIONAL): The user's gender, the valid gender are `male` and `female`.
+    * `reminderDay` (string, OPTIONAL): The user's reminder preference for the day, please use valid `HH:mm:ss` format.
+    * `reminderNight` (string, OPTIONAL): The user's reminder preference for the night, please use valid `HH:mm:ss` format.
 
 * Response:
 ```json
 {
-    "message": "Successfully set the user profile",
+    "message": "Successfully updated the user profile",
     "success": true
 }
 ```
 
 * Notes:
     * The response is a JSON object with a `success` field indicating the success or failure of the request.
+    * Please atleast input one parameter to return a `success` response.
 
 ## Set Profile Picture
 
@@ -73,18 +89,18 @@
     * `POST /api/profile/upload`
 
 * Content-Type:
-    * `multipart/form-data`
+    * **DON'T SET CONTENT-TYPE HEADER YOURSELF THE API WILL DECIDE!**
 
 * Authorization Header:
     * `Bearer {token}`
 
 * Request Body:
-    * Make sure that you're using `multipart/form-data` content type!
+    * Make sure that you're using `Form Data` body type!
 
     | **Field** | **Value** | **Description** |
     |:---:|:---:|:---|
     | uid | String | The user's id |
-    | file | File | Image file type either .jpg or .png |
+    | file | File | Image file type either`.jpg`,`.jpeg`, or`.png` |
 
 * Response:
 ```json
@@ -97,3 +113,7 @@
     "success": true
 }
 ```
+
+* Notes:
+    * The response is a JSON object with a `success` field indicating the success or failure of the request.
+    * The data field contains the user's  `uid` and the uploaded `profileImg` URL.
