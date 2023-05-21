@@ -5,10 +5,10 @@
 - Endpoint
 
   - [Authentication](authentication.md)
-  - [Profile]()
+  - [Profile](profile.md)
   - [Result]()
   - [Predict]()
   - [Improvement]()
   - [Recommendation]()
 
-- [Github Repo]()
+- [Github Repo](https://github.com/hsymicm/skinmate-api)

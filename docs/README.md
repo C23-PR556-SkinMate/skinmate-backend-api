@@ -9,7 +9,7 @@
 ## List of Endpoint
 
 1. [Authentication](authentication.md)
-2. [Profile]()
+2. [Profile](profile.md)
 3. [Result]()
 4. [Predict]()
 5. [Improvement]()
