@@ -4,6 +4,12 @@ const app = require('../firebase');
 const db = app.firestore();
 require('dotenv').config();
 
+const {
+    validateDate,
+    validateSkinType,
+    validateGender,
+} = require('../helper/formatValidationHelper');
+
 const comparePassword = async (password, hashedPassword) => {
     return bcrypt.compare(password, hashedPassword);
 };
@@ -66,7 +72,14 @@ const login = async (req, res) => {
 };
 
 const register = async (req, res) => {
-    const { email, password, displayName, description } = req.body;
+    const {
+        email,
+        password,
+        displayName,
+        dateOfBirth,
+        skinType,
+        gender,
+    } = req.body;
 
     if (!email || !password) {
         return res.status(404).json({
@@ -77,6 +90,24 @@ const register = async (req, res) => {
     if (!validateEmail(email)) {
         return res.status(409).json({
             message: 'Invalid email format',
+        });
+    }
+
+    if (!validateDate(dateOfBirth)) {
+        return res.status(404).json({
+            message: 'Error, invalid date format',
+        });
+    }
+
+    if (!validateSkinType(skinType)) {
+        return res.status(404).json({
+            message: 'Error, skin type does not exist',
+        });
+    }
+    
+    if (!validateGender(gender)) {
+        return res.status(404).json({
+            message: 'Error, gender type does not exist',
         });
     }
 
@@ -107,7 +138,9 @@ const register = async (req, res) => {
 
         await profileRef.doc(uid).set({
             displayName: displayName || email.split('@')[0],
-            description: description || '',
+            dateOfBirth: dateOfBirth || '',
+            skinType: skinType || '',
+            gender: gender || '',
             createdAt,
             updatedAt : createdAt,
         });
