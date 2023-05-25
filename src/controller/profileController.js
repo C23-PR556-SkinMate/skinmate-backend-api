@@ -14,7 +14,7 @@ const {
     validateSkinType,
 } = require('../helper/formatValidationHelper');
 
-const getProfile = async (req, res) => {
+const getProfile = async (req, res, next) => {
     const { uid } = req.params;
     
     try {
@@ -53,11 +53,11 @@ const getProfile = async (req, res) => {
             });
         }
     } catch (error) {
-        res.status(500);
+        next(error);
     }
 };
 
-const updateProfile = async (req, res) => {
+const updateProfile = async (req, res, next) => {
     const { uid } = req.params;
     const compareUid = req.result.uid;
     const {
@@ -148,11 +148,11 @@ const updateProfile = async (req, res) => {
             success: true,
         });
     } catch (error) {
-        res.status(500);
+        next(error);
     }
 };
 
-const setProfilePicture = async (req, res) => {
+const setProfilePicture = async (req, res, next) => {
     const { uid } = req.result;
     const file = req.file;
     const compareUid = req.body.uid;
@@ -203,7 +203,7 @@ const setProfilePicture = async (req, res) => {
             success: true,
         });
     } catch (error) {
-        res.status(500);
+        next(error);
     }
 };
 

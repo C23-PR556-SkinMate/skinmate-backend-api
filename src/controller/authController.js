@@ -5,6 +5,7 @@ const db = app.firestore();
 require('dotenv').config();
 
 const {
+    validateEmail,
     validateDate,
     validateSkinType,
     validateGender,
@@ -18,12 +19,7 @@ const encryptPassword = async (password) => {
     return bcrypt.hash(password, 10);
 };
 
-const validateEmail = (email) => {
-    const regex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-    return email.match(regex);
-};
-
-const login = async (req, res) => {
+const login = async (req, res, next) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -67,11 +63,11 @@ const login = async (req, res) => {
             });
         }
     } catch (error) {
-        res.status(500);
+        next(error);
     }
 };
 
-const register = async (req, res) => {
+const register = async (req, res, next) => {
     const {
         email,
         password,
@@ -151,7 +147,7 @@ const register = async (req, res) => {
         });
 
     } catch (error) {
-        res.status(500);
+        next(error);
     }
 };
 

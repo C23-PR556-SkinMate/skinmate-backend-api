@@ -1,6 +1,6 @@
 # Profile
 
-> This API provides endpoints for getting and updating the user profile.
+> This API provides endpoints that enable users to manage their profiles by retrieving or updating the user information. It also allows users to set or update their profile picture.
 
 ## Get Profile
 

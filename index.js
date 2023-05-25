@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+const errorMiddleware = require('./src/middleware/errorMiddleware');
 require('dotenv').config();
 
 const PORT = process.env.PORT || 3000;
@@ -23,6 +24,14 @@ server.get('/api', (req, res) => {
         success: true,
     });
 });
+
+// server.use((req, res, next) => {
+//     const error = new Error('Not Found');
+//     error.status = 404;
+//     next(error);
+// });
+
+server.use(errorMiddleware);
 
 server.listen(PORT, () => {
     console.log(`Listening on PORT ${PORT}`);
