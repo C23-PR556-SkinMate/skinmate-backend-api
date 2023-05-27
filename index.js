@@ -18,6 +18,7 @@ server.get('/', (req, res) => {
 
 server.use('/api', require('./src/router/authRouter'));
 server.use('/api', require('./src/router/profileRouter'));
+server.use('/api', require('./src/router/productRouter'));
 server.get('/api', (req, res) => {
     res.status(200).json({
         message: 'Response successful',
