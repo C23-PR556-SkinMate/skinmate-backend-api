@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const errorMiddleware = require('./src/middleware/errorMiddleware');
 require('dotenv').config();
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 const server = express();
 
 server.disable('x-powered-by');
