@@ -15,6 +15,12 @@ const getProducts = async (req, res, next) => {
         });
     }
 
+    if (!Number(limit) || limit <= 0) {
+        return res.status(404).json({
+            message: 'Error, invalid limit'
+        });
+    }
+
     try {
         const filteredProducts = skinProducts.filter((product) => {
             return product.tags.includes(tag);
