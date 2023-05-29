@@ -153,11 +153,11 @@ const updateProfile = async (req, res, next) => {
 };
 
 const setProfilePicture = async (req, res, next) => {
-    const { uid } = req.result;
+    const { uid } = req.params;
+    const compareUid = req.result.uid;
     const file = req.file;
-    const compareUid = req.body.uid;
 
-    if (!compareUid) {
+    if (!uid) {
         return res.status(404).json({
             message: 'Error, missing uid',
         });
