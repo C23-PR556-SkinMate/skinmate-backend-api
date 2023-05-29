@@ -7,12 +7,20 @@
   <meta name="description" content="Description">
   <link rel="icon" href="/favicon.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css">
+  <style>
+    :root {
+      --mono-hue        : 113;
+      --mono-saturation : 0%;
+      --theme-color: #dd54b4;
+    }
+  </style>
 </head>
 <body>
   <div id="app"></div>
   <script>
     window.$docsify = {
+      name: 'SkinMate API',
       auto2top: true,
       executeScript: true,
       loadSidebar: true,
@@ -20,7 +28,11 @@
       mergeNavbar: true,
       maxLevel: 4,
       subMaxLevel: 2,
-      search: 'auto',
+      search: {
+        depth: 3,
+        noData: 'No results!',
+        placeholder: 'Search...'
+      },
     }
   </script>
   <!-- Docsify v4 -->

@@ -86,10 +86,10 @@
 ## Set Profile Picture
 
 * Endpoint:
-    * `POST /api/profile/upload`
+    * `POST /api/profile/{uid}/upload`
 
-* Content-Type:
-    * **DON'T SET CONTENT-TYPE HEADER YOURSELF THE API WILL DECIDE!**
+* Parameter:
+    * `uid` (string, REQUIRED): The user's id.
 
 * Authorization Header:
     * `Bearer {token}`
@@ -99,7 +99,6 @@
 
     | **Field** | **Value** | **Description** |
     |:---:|:---:|:---|
-    | uid | String | The user's id |
     | file | File | Image file type either`.jpg`,`.jpeg`, or`.png` |
 
 * Response:
