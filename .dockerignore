@@ -1,5 +1,4 @@
 .env
 *.txt
 data
-config
 node_modules
