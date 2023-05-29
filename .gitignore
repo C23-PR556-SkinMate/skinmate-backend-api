@@ -2,3 +2,4 @@ service-account.json
 .env
 note.txt
 node_modules
+config
