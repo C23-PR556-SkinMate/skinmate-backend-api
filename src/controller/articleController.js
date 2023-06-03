@@ -1,24 +1,45 @@
+const app = require('../firebase');
+const db = app.firestore();
 const Joi = require('joi');
+
 
 // Validation schema for query parameters
 const articleSchema = Joi.object({
-    category: Joi.string().valid('acne', 'wrinkle', 'blackspots', 'blackheads', 'dryness', 'dullness').required(),
+    tags: Joi.string().valid(
+        'acnes', 
+        'wrinkles', 
+        'darkspot', 
+        'blackheads', 
+    ).required()
 });
 
 // Controller function for handling the /articles endpoint
-function getArticles(req, res) {
+async function getArticles(req, res, next) {
     const { error, value } = articleSchema.validate(req.query);
 
-    if (error) {
-        res.status(400).json({ error: error.details[0].message });
-    } else {
-        const category = value.category;
+    const articles = [];
+
+    if (error) { 
+        return res.status(404).json({ message: error.details[0].message });
+    }
+    
+    try {
+        const tags = value.tags;
         //Perform logic to fetch articles based on the category
-        const articles = [
-            { title: 'Article 1', category },
-            { title: 'Article 2', category },
-        ];
-        res.json(articles);
+        const articleRef = db.collection('articles');
+        const articleSnapshot = await articleRef.where('tags','==', tags).get();
+        if (!articleSnapshot.empty) {
+            articleSnapshot.docs.forEach((doc)=>{
+                articles.push(doc.data());
+            });
+        }
+        res.status(200).json({
+            data: articles,
+            message: 'Successfully retrieved the article',
+            success: true
+        });  
+    } catch (error) {
+        next(error);
     }
 }
 
