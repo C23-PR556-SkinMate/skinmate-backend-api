@@ -1,6 +1,8 @@
 # SkinMate Backend API Docs
 
-The SkinMate Backend API provides functionalities related to user authentication, user profiles, scan results, image prediction, and product recommendation. The API is built using Node.js, Express, Multer, and the Firebase Admin SDK. User data is stored in Google Cloud Storage and Cloud Firestore, and the API is deployed on Google Cloud Run.
+The SkinMate Backend API provides functionalities related to user authentication, user profiles, scan results, image prediction, and product recommendation. 
+
+The API is built using Node.js, Express, Multer, and the Firebase Admin SDK. User data is stored in Google Cloud Storage and Cloud Firestore, and the API is deployed on Google Cloud Run.
 
 ## API Documentation URL
 
