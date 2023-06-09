@@ -1,11 +1,19 @@
 # Article
 
+<<<<<<< HEAD
 > This API provides endpoints that enable users to get article based on the skin issue they have with the help of tag query.
+=======
+> This API provides endpoints that enable users to get article or tips & tricks based on the skin issue they have with the help of tag query.
+>>>>>>> a25ba4c3db6dd64c58d543af75fd448fb9466991
 
 ## Get Article
 
 * Endpoint:
+<<<<<<< HEAD
     * `GET /api/article?tags={skinProblem}`
+=======
+    * `GET /api/articles?tags={skinProblem}`
+>>>>>>> a25ba4c3db6dd64c58d543af75fd448fb9466991
 
 * Query:
     * `tags` (string, REQUIRED): The user's skin issue..

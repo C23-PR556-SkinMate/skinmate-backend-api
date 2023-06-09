@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { handleResult } = require('../controller/resultController');
+const { verifyToken } = require('../middleware/tokenMiddleware');
+const { predictRateLimitter } = require('../middleware/limiterMiddleware');
+const multerMiddleware = require('../middleware/multerMiddleware');
+const { setResult, getAllResults } = require('../controller/resultController');
 
-// POST /api/results/:user_id/:scan_id
-// eslint-disable-next-line no-undef
-router.post('/result', handleResult);
+router.post('/result/predict', predictRateLimitter, verifyToken, multerMiddleware.single('file'), setResult);
+router.get('/results', verifyToken, getAllResults);
 
 module.exports = router;

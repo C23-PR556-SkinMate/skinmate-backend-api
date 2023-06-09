@@ -1,6 +1,6 @@
 # Profile
 
-> This API provides endpoints for getting and updating the user profile.
+> This API provides endpoints that enable users to manage their profiles by retrieving or updating the user information. It also allows users to set or update their profile picture.
 
 ## Get Profile
 
@@ -66,7 +66,7 @@
     * `displayName` (string, OPTIONAL): The user's display name.
     * `description` (string, OPTIONAL): The user's description.
     * `dateOfBirth` (string, OPTIONAL): The user's date of birth with valid `DD/MM/YYYY` format.
-    * `skinType` (string, OPTIONAL): The user's skin type, the valid skin type are `oily`, `dry`, and `oily-dry`.
+    * `skinType` (string, OPTIONAL): The user's skin type, the valid skin type are `oily`, `dry`, and `combination`.
     * `gender` (string, OPTIONAL): The user's gender, the valid gender are `male` and `female`.
     * `reminderDay` (string, OPTIONAL): The user's reminder preference for the day, please use valid `HH:mm:ss` format.
     * `reminderNight` (string, OPTIONAL): The user's reminder preference for the night, please use valid `HH:mm:ss` format.
@@ -86,10 +86,10 @@
 ## Set Profile Picture
 
 * Endpoint:
-    * `POST /api/profile/upload`
+    * `POST /api/profile/{uid}/upload`
 
-* Content-Type:
-    * **DON'T SET CONTENT-TYPE HEADER YOURSELF THE API WILL DECIDE!**
+* Parameter:
+    * `uid` (string, REQUIRED): The user's id.
 
 * Authorization Header:
     * `Bearer {token}`
@@ -99,7 +99,6 @@
 
     | **Field** | **Value** | **Description** |
     |:---:|:---:|:---|
-    | uid | String | The user's id |
     | file | File | Image file type either`.jpg`,`.jpeg`, or`.png` |
 
 * Response:

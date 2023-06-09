@@ -1,8 +1,12 @@
-const app = require('../firebase');
 const { validateImageType } = require('../helper/imageValidationHelper');
 const uploadImage = require('../helper/uploadImageHelper');
-const db = app.firestore();
 require('dotenv').config();
+
+const {
+    getProfileModel,
+    updateProfileModel,
+    updateProfilePictureModel,
+} = require('../model/profileModel');
 
 const dayjs = require('dayjs');
 dayjs.extend(require('dayjs/plugin/customParseFormat'));
@@ -14,14 +18,13 @@ const {
     validateSkinType,
 } = require('../helper/formatValidationHelper');
 
-const getProfile = async (req, res) => {
+const getProfile = async (req, res, next) => {
     const { uid } = req.params;
     
     try {
-        const profileRef = db.collection('profiles');
-        const profileSnapshot = await profileRef.doc(uid).get();
+        const profile = await getProfileModel(uid);
         
-        if (profileSnapshot.exists) {
+        if (profile.exists) {
             const { 
                 profileImg,
                 displayName,
@@ -31,7 +34,7 @@ const getProfile = async (req, res) => {
                 gender,
                 reminderDay,
                 reminderNight,
-            } = profileSnapshot.data();
+            } = profile.data();
 
             return res.status(200).json({
                 data: {
@@ -53,11 +56,11 @@ const getProfile = async (req, res) => {
             });
         }
     } catch (error) {
-        res.status(500);
+        next(error);
     }
 };
 
-const updateProfile = async (req, res) => {
+const updateProfile = async (req, res, next) => {
     const { uid } = req.params;
     const compareUid = req.result.uid;
     const {
@@ -133,31 +136,23 @@ const updateProfile = async (req, res) => {
     }
 
     try {
-        const profileRef = db.collection('profiles');
-        const updatedAt = Date.now();
-
-        await profileRef.doc(uid).set({
-            ...newObj,
-            updatedAt,
-        }, {
-            merge: true,
-        });
+        await updateProfileModel(uid, newObj);
 
         return res.status(200).json({
             message: 'Successfully updated the user profile',
             success: true,
         });
     } catch (error) {
-        res.status(500);
+        next(error);
     }
 };
 
-const setProfilePicture = async (req, res) => {
-    const { uid } = req.result;
+const setProfilePicture = async (req, res, next) => {
+    const { uid } = req.params;
+    const compareUid = req.result.uid;
     const file = req.file;
-    const compareUid = req.body.uid;
 
-    if (!compareUid) {
+    if (!uid) {
         return res.status(404).json({
             message: 'Error, missing uid',
         });
@@ -184,15 +179,7 @@ const setProfilePicture = async (req, res) => {
     try {    
         const url = await uploadImage(file, uid, 'profile-picture');
         
-        const profileRef = db.collection('profiles');
-        const updatedAt = Date.now();
-
-        await profileRef.doc(uid).set({
-            profileImg: url,
-            updatedAt
-        }, {
-            merge: true
-        });
+        await updateProfilePictureModel(uid, url);
 
         return res.status(200).json({
             data: {
@@ -203,7 +190,7 @@ const setProfilePicture = async (req, res) => {
             success: true,
         });
     } catch (error) {
-        res.status(500);
+        next(error);
     }
 };
 

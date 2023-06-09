@@ -4,6 +4,11 @@ dayjs.extend(require('dayjs/plugin/customParseFormat'));
 const validSkinTypes = ['normal', 'oily', 'dry', 'combination'];
 const validGender = ['male', 'female'];
 
+const validateEmail = (email) => {
+    const regex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+    return email.match(regex);
+};
+
 const validateSkinType = (skinType) => {
     if (skinType !== undefined) {
         if (skinType === '') return true;
@@ -37,6 +42,7 @@ const validateDate = (date) => {
 };
 
 module.exports = {
+    validateEmail,
     validateSkinType,
     validateGender,
     validateDate,
