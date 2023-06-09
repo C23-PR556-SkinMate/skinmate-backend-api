@@ -8,7 +8,7 @@
   - [Profile](profile.md)
   - [Result]()
   - [Predict]()
-  - [Improvement]()
+  - [Article](article.md)
   - [Product](product.md)
 
 - [Github Repo](https://github.com/hsymicm/skinmate-api)

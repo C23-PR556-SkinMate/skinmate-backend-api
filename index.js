@@ -16,8 +16,10 @@ server.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'docs', 'index.html'));
 });
 
+server.use('/api', require('./src/router/resultRouter'));
 server.use('/api', require('./src/router/authRouter'));
 server.use('/api', require('./src/router/profileRouter'));
+server.use('/api', require('./src/router/articleRouter'));
 server.use('/api', require('./src/router/productRouter'));
 server.use('/api', require('./src/router/resultRouter'));
 server.get('/api', (req, res) => {
