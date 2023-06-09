@@ -1,8 +1,12 @@
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const app = require('../firebase');
-const db = app.firestore();
+const { comparePassword } = require('../helper/hashHelper');
 require('dotenv').config();
+
+const {
+    loginModel,
+    emailExistsModel,
+    registerModel,
+} = require('../model/authModel');
 
 const {
     validateEmail,
@@ -10,15 +14,6 @@ const {
     validateSkinType,
     validateGender,
 } = require('../helper/formatValidationHelper');
-
-const comparePassword = async (password, hashedPassword) => {
-    return bcrypt.compare(password, hashedPassword);
-};
-
-const encryptPassword = async (password) => {
-    return bcrypt.hash(password, 10);
-};
-
 const login = async (req, res, next) => {
     const { email, password } = req.body;
 
@@ -35,9 +30,8 @@ const login = async (req, res, next) => {
     }
 
     try {
-        const userRef = db.collection('users');
-        const userSnapshot = await userRef.where('email', '==', email).limit(1).get();
-        
+        const userSnapshot = await loginModel(email);
+
         if (userSnapshot.empty) {
             return res.status(404).json({
                 message: 'Email does not exists',
@@ -108,8 +102,7 @@ const register = async (req, res, next) => {
     }
 
     try {
-        const userRef = db.collection('users');
-        const checkEmails = await userRef.where('email', '==', email).get();
+        const { userRef, checkEmails } = await emailExistsModel(email);
 
         if (!checkEmails.empty) {
             return res.status(409).json({
@@ -117,29 +110,17 @@ const register = async (req, res, next) => {
             });
         }
 
-        const hashedPassword = await encryptPassword(password);
-        const createdAt = Date.now();
         const newUserRef = userRef.doc();
-        
-        await newUserRef.set({
-            email,
-            password: hashedPassword,
-            verified: false,
-            createdAt,
-            updatedAt : createdAt,
-        });
-        
-        const profileRef = db.collection('profiles');
-        const uid = newUserRef.id;
 
-        await profileRef.doc(uid).set({
-            displayName: displayName || email.split('@')[0],
-            dateOfBirth: dateOfBirth || '',
-            skinType: skinType || '',
-            gender: gender || '',
-            createdAt,
-            updatedAt : createdAt,
-        });
+        await registerModel(
+            newUserRef,
+            password,
+            email,
+            displayName,
+            dateOfBirth,
+            skinType,
+            gender,
+        );
         
         res.status(200).json({
             message: 'Registered successfully',
