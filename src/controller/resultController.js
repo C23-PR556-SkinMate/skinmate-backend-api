@@ -1,14 +1,17 @@
 const { validateImageType } = require('../helper/imageValidationHelper');
+const { getProductsModel } = require('../model/productModel');
 
 const axios = require('axios');
 const FormData = require('form-data');
 
-const app = require('../firebase');
-const db = app.firestore();
+// const app = require('../firebase');
+// const db = app.firestore();
 
+const validSkinTypes = ['normal', 'dry', 'oily', 'combination'];
 const URL = 'https://skinmate-predict-api-vle27crhfa-et.a.run.app/scan';
 
 const setResult = async (req, res, next) => {
+    const { skintype, limit } = req.query;
     const { uid } = req.result;
     const file = req.file;
 
@@ -24,9 +27,21 @@ const setResult = async (req, res, next) => {
         });
     }
 
+    if (Number(limit) && limit <= 0) {
+        return res.status(404).json({
+            message: 'Error, invalid limit'
+        });
+    }
+
     if (!validateImageType(file)) {
         return res.status(404).json({
             message: 'Error, invalid file type',
+        });
+    }
+
+    if (skintype && !validSkinTypes.includes(skintype)) {
+        return res.status(404).json({
+            message: 'Error, invalid skintype query'
         });
     }
 
@@ -48,13 +63,28 @@ const setResult = async (req, res, next) => {
             data: formData,
         });
 
+        const problem = response.data.data.skinProblem;
+
+        const skinTreatment = [];
+        const dailyCare = [];
+
+        if (problem) await getProductsModel(skinTreatment, 'skinTreatment', problem, limit);
+        if (skintype) await getProductsModel(dailyCare, 'dailyCare', skintype, limit);
+
         // const createdAt = Date.now();
 
-        const resultRef = db.collection('results');
-        await resultRef.doc(uid).set({});
+        // const resultRef = db.collection('results');
+        // await resultRef.doc(uid).set({});
 
         return res.status(200).json({
-            data: response.data.data,
+            data: {
+                problem,
+                skintype,
+                products: {
+                    skinTreatment,
+                    dailyCare,
+                }
+            },
             message: 'Results has been predicted and saved successfully',
             success: true,
         });
