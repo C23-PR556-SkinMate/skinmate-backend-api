@@ -1,11 +1,11 @@
-# Product
+# Article
 
-> This API provides endpoints that enable users to get products based on the skin issue they have with the help of tag query.
+> This API provides endpoints that enable users to get article or tips & tricks based on the skin issue they have with the help of tag query.
 
-## Get Products
+## Get Article
 
 * Endpoint:
-    * `GET /api/products?tags={skinProblem}`
+    * `GET /api/articles?tags={skinProblem}`
 
 * Query:
     * `tags` (string, REQUIRED): The user's skin issue..
