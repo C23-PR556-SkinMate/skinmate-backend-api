@@ -3,7 +3,6 @@ const db = app.firestore();
 const Joi = require('joi');
 
 
-// Validation schema for query parameters
 const articleSchema = Joi.object({
     tags: Joi.string().valid(
         'acnes', 
@@ -13,7 +12,7 @@ const articleSchema = Joi.object({
     ).required()
 });
 
-// Controller function for handling the /articles endpoint
+
 async function getArticles(req, res, next) {
     const { error, value } = articleSchema.validate(req.query);
 
@@ -25,7 +24,6 @@ async function getArticles(req, res, next) {
     
     try {
         const tags = value.tags;
-        //Perform logic to fetch articles based on the category
         const articleRef = db.collection('articles');
         const articleSnapshot = await articleRef.where('tags','==', tags).get();
         if (!articleSnapshot.empty) {
