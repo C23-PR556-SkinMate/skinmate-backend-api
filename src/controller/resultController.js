@@ -1,12 +1,14 @@
 const { validateImageType } = require('../helper/imageValidationHelper');
 const { getProductsModel } = require('../model/productModel');
+const { getArticleModel } = require('../model/articleModel');
+const {
+    updateResultModel, 
+    getResultsModel,
+} = require('../model/resultModel');
+
 
 const axios = require('axios');
 const FormData = require('form-data');
-
-// const app = require('../firebase');
-// const db = app.firestore();
-
 const validSkinTypes = ['normal', 'dry', 'oily', 'combination'];
 const URL = 'https://skinmate-predict-api-vle27crhfa-et.a.run.app/scan';
 
@@ -67,17 +69,16 @@ const setResult = async (req, res, next) => {
 
         const skinTreatment = [];
         const dailyCare = [];
+        const article = await getArticleModel(problem);
 
         if (problem) await getProductsModel(skinTreatment, 'skinTreatment', problem, limit);
         if (skintype) await getProductsModel(dailyCare, 'dailyCare', skintype, limit);
 
-        // const createdAt = Date.now();
-
-        // const resultRef = db.collection('results');
-        // await resultRef.doc(uid).set({});
-
+        await updateResultModel(uid, problem);
+    
         return res.status(200).json({
             data: {
+                article,
                 problem,
                 skintype,
                 products: {
@@ -89,12 +90,14 @@ const setResult = async (req, res, next) => {
             success: true,
         });
     } catch (error) {
+        console.log(error);
         next(error);
     }
 };
 
-const getAllResults = async (req, res, next) => {
-    const { uid } = req.result.uid;
+const getResults = async (req, res, next) => {
+    const { limit } = req.query;
+    const { uid } = req.result;
 
     if (!uid) {
         return res.status(404).json({
@@ -102,9 +105,18 @@ const getAllResults = async (req, res, next) => {
         });
     }
 
+    if (Number(limit) && limit <= 0) {
+        return res.status(404).json({
+            message: 'Error, invalid limit'
+        });
+    }
+
     try {
+        const results = await getResultsModel(uid);
         return res.status(200).json({
-            data: {},
+            data: {
+                results: limit ? results.splice(0, limit) : results
+            },
             message: 'Results has been retrieved successfully',
             success: true,
         });
@@ -115,5 +127,5 @@ const getAllResults = async (req, res, next) => {
 
 module.exports = {
     setResult,
-    getAllResults,
+    getResults,
 };

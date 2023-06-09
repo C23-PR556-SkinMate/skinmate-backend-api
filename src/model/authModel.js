@@ -1,6 +1,5 @@
 const app = require('../firebase');
 const db = app.firestore();
-
 const { encryptPassword } = require('../helper/hashHelper');
 
 const loginModel = async (email) => {

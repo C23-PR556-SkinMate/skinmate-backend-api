@@ -10,7 +10,6 @@
 
 1. [Authentication](authentication.md)
 2. [Profile](profile.md)
-3. [Result]()
-4. [Predict]()
-5. [Article](article.md)
-6. [Product](product.md)
+3. [Result](result.md)
+4. [Article](article.md)
+5. [Product](product.md)

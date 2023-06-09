@@ -6,8 +6,7 @@
 
   - [Authentication](authentication.md)
   - [Profile](profile.md)
-  - [Result]()
-  - [Predict]()
+  - [Result](result.md)
   - [Article](article.md)
   - [Product](product.md)
 
