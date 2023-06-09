@@ -26,7 +26,7 @@
     * `displayName` (string, OPTIONAL): The user's display name.
     * `description` (string, OPTIONAL): The user's description.
     * `dateOfBirth` (string, OPTIONAL): The user's date of birth with valid `DD/MM/YYYY` format.
-    * `skinType` (string, OPTIONAL): The user's skin type, the valid skin type are `oily`, `dry`, and `oily-dry`.
+    * `skinType` (string, OPTIONAL): The user's skin type, the valid skin type are `oily`, `dry`, and `combination`.
     * `gender` (string, OPTIONAL): The user's gender, the valid gender are `male` and `female`.
 
 * Response:
