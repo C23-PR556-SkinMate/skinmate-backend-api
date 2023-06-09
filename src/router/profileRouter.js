@@ -8,7 +8,7 @@ const {
     setProfilePicture,
 } = require('../controller/profileController');
 
-router.post('/profile/upload', verifyToken, multerMiddleware.single('file'), setProfilePicture);
+router.post('/profile/:uid/upload', verifyToken, multerMiddleware.single('file'), setProfilePicture);
 router.get('/profile/:uid', verifyToken, getProfile);
 router.put('/profile/:uid', verifyToken, updateProfile);
 

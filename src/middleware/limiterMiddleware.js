@@ -6,6 +6,13 @@ const authRateLimitter = rateLimit({
     message: 'You have exceeded the request limit',
 });
 
+const predictRateLimitter = rateLimit({
+    windowMs: 120 * 1000,
+    max: 120,
+    message: 'You have exceeded the request limit'
+});
+
 module.exports = {
     authRateLimitter,
+    predictRateLimitter,
 };
