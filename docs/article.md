@@ -1,6 +1,6 @@
 # Article
 
-> This API provides endpoints that enable users to get article or tips & tricks based on the skin issue they have with the help of tag query.
+> This API provides endpoints that enable users to get article based on the skin issue they have with the help of tag query.
 
 ## Get Article
 

@@ -1,6 +1,5 @@
 const app = require('../firebase');
 const db = app.firestore();
-
 const direction = ['asc', 'desc'];
 const defaultLimit = 5;
 
