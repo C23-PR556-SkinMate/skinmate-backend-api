@@ -1,41 +1,89 @@
-/* eslint-disable camelcase */
+const { validateImageType } = require('../helper/imageValidationHelper');
 
+const axios = require('axios');
+const FormData = require('form-data');
 
-// Function to handle the result endpoint
-const handleResult = (req, res) => {
-    // eslint-disable-next-line no-unused-vars
-    const { uId, scan_id } = req.params;
-    const  { image_url }  = req.body;
-  
-    // Placeholder logic while the model is not finished
-    const scanResult = placeholderModel(image_url);
-  
-    // Return the scan results
-    res.json({ success: true, scan_results: scanResult });
+const app = require('../firebase');
+const db = app.firestore();
+
+const URL = 'https://skinmate-predict-api-vle27crhfa-et.a.run.app/scan';
+
+const setResult = async (req, res, next) => {
+    const { uid } = req.result;
+    const file = req.file;
+
+    if (!uid) {
+        return res.status(404).json({
+            message: 'Error, missing uid',
+        });
+    }
+
+    if (!file) {
+        return res.status(404).json({
+            message: 'Error, missing file',
+        });
+    }
+
+    if (!validateImageType(file)) {
+        return res.status(404).json({
+            message: 'Error, invalid file type',
+        });
+    }
+
+    try {
+        const { buffer, originalname } = file;
+        const formData = new FormData();
+
+        formData.append(
+            'file',
+            buffer,
+            { filename: originalname }
+        );
+
+        const response = await axios({
+            method: 'POST',
+            mode: 'cors',
+            url : URL,
+            timeout: 8000,
+            data: formData,
+        });
+
+        // const createdAt = Date.now();
+
+        const resultRef = db.collection('results');
+        await resultRef.doc(uid).set({});
+
+        return res.status(200).json({
+            data: response.data.data,
+            message: 'Results has been predicted and saved successfully',
+            success: true,
+        });
+    } catch (error) {
+        next(error);
+    }
 };
-  
-// Placeholder function for the machine learning model
-// eslint-disable-next-line no-unused-vars
-const placeholderModel = (image_url) => {
-    // Simulated logic while the model is not finished
-    // Replace this with your actual machine learning model integration
-    return [
-        // eslint-disable-next-line camelcase
-        { problem_type: 'acne', 
-            severity: 'moderate', 
-            confidence: 0.85 },
-        // eslint-disable-next-line camelcase
-        { problem_type: 'dry_skin',
-            severity: 'mild',
-            confidence: 0.6 },
-        // eslint-disable-next-line camelcase
-        { problem_type: 'wrinkles', 
-            severity: 'high', 
-            confidence: 0.92 }
-    ];
+
+const getAllResults = async (req, res, next) => {
+    const { uid } = req.result.uid;
+
+    if (!uid) {
+        return res.status(404).json({
+            message: 'Error, missing uid',
+        });
+    }
+
+    try {
+        return res.status(200).json({
+            data: {},
+            message: 'Results has been retrieved successfully',
+            success: true,
+        });
+    } catch (error) {
+        next(error);
+    }
 };
-  
+
 module.exports = {
-    handleResult,
+    setResult,
+    getAllResults,
 };
-  

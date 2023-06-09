@@ -9,6 +9,6 @@
   - [Result]()
   - [Predict]()
   - [Article](article.md)
-  - [Product]()
+  - [Product](product.md)
 
 - [Github Repo](https://github.com/hsymicm/skinmate-api)

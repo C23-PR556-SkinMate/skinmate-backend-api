@@ -11,6 +11,14 @@ module.exports = {
         'ecmaVersion': 'latest'
     },
     'rules': {
+        'no-unused-vars': [
+            'error', 
+            { 
+                'argsIgnorePattern': '^_',
+                'varsIgnorePattern': '^_',
+                'caughtErrorsIgnorePattern': '^_'
+            }
+        ],
         'camelcase': [
             'error'
         ],

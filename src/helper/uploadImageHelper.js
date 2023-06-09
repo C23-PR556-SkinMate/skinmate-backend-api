@@ -1,13 +1,11 @@
 const app = require('../firebase');
-const { getImageType } = require('./imageValidationHelper');
 const storage = app.storage().bucket();
 
 const uploadImage = (file, uid, folderPath = '') => {
     return new Promise((resolve, reject) => {
-        const { originalname, buffer } = file;
-        const fileExt = getImageType(originalname);
+        const { buffer } = file;
 
-        const blob = storage.file(`${folderPath}/${uid}-profile-picture.${fileExt}`);
+        const blob = storage.file(`${folderPath}/${uid}-profile-picture.jpg`);
         const blobStream = blob.createWriteStream({
             resumable: false
         });
