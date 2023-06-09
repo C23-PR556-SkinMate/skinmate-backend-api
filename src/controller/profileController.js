@@ -1,8 +1,12 @@
-const app = require('../firebase');
 const { validateImageType } = require('../helper/imageValidationHelper');
 const uploadImage = require('../helper/uploadImageHelper');
-const db = app.firestore();
 require('dotenv').config();
+
+const {
+    getProfileModel,
+    updateProfileModel,
+    updateProfilePictureModel,
+} = require('../model/profileModel');
 
 const dayjs = require('dayjs');
 dayjs.extend(require('dayjs/plugin/customParseFormat'));
@@ -18,10 +22,9 @@ const getProfile = async (req, res, next) => {
     const { uid } = req.params;
     
     try {
-        const profileRef = db.collection('profiles');
-        const profileSnapshot = await profileRef.doc(uid).get();
+        const profile = await getProfileModel(uid);
         
-        if (profileSnapshot.exists) {
+        if (profile.exists) {
             const { 
                 profileImg,
                 displayName,
@@ -31,7 +34,7 @@ const getProfile = async (req, res, next) => {
                 gender,
                 reminderDay,
                 reminderNight,
-            } = profileSnapshot.data();
+            } = profile.data();
 
             return res.status(200).json({
                 data: {
@@ -133,15 +136,7 @@ const updateProfile = async (req, res, next) => {
     }
 
     try {
-        const profileRef = db.collection('profiles');
-        const updatedAt = Date.now();
-
-        await profileRef.doc(uid).set({
-            ...newObj,
-            updatedAt,
-        }, {
-            merge: true,
-        });
+        await updateProfileModel(uid, newObj);
 
         return res.status(200).json({
             message: 'Successfully updated the user profile',
@@ -184,15 +179,7 @@ const setProfilePicture = async (req, res, next) => {
     try {    
         const url = await uploadImage(file, uid, 'profile-picture');
         
-        const profileRef = db.collection('profiles');
-        const updatedAt = Date.now();
-
-        await profileRef.doc(uid).set({
-            profileImg: url,
-            updatedAt
-        }, {
-            merge: true
-        });
+        await updateProfilePictureModel(uid, url);
 
         return res.status(200).json({
             data: {
