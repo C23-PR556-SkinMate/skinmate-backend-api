@@ -4,7 +4,7 @@ The SkinMate Backend API provides functionalities related to user authentication
 
 The API is built using Node.js, Express, Multer, and the Firebase Admin SDK. User data is stored in Google Cloud Storage and Cloud Firestore, and the API is deployed on Google Cloud Run.
 
-![Infra](https://i.imgur.com/CfvONTd.png)
+![Infra](https://i.imgur.com/nJKh0S9.png)
 
 ## API Base URL
 
