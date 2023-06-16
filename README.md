@@ -408,7 +408,7 @@ npm run dev
 ## Scan Facial Problem
 
 * Endpoint:
-    * `GET /api/result/predict`
+    * `POST /api/result/predict`
 
 * Request Body:
     * Make sure that you're using `Form Data` body type!
